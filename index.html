@@ -4,8 +4,18 @@
 
     </head>
     <body>
-        <div id="blocklyArea" class="w(100%) h(100%)">
-            <div id="blocklyDiv" class="w(100%) h(100%)"></div>
+        <div class="hbox(stretch) w(100%) h(100%)">
+            <div id="blocklyArea" class="w(60%)">
+                <div id="blocklyDiv" class="w(100%) h(100%)"></div>
+            </div>
+            <div class="w(100%) p(10)">
+                <button class="bg(#ddd) p(2/10) r(5)">
+                    convert
+                </button>
+                <div id="textarea">
+                    hi
+                </div>
+            </div>
         </div>
         <script type="module" src="./src/main.ts"></script>
         <script src="https://unpkg.com/adorable-css@1.4.3"></script>

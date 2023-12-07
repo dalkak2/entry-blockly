@@ -1,9 +1,9 @@
-import { Blockly, javascriptGenerator } from "./deps/blockly.ts"
+import { Blockly } from "./deps/blockly.ts"
 
 Blockly.defineBlocksWithJsonArray([
     {
         type: "when_run_button_click",
-        message0: "시작하기 버튼을 클릭했을 때",
+        message0: "시작하기 버튼을 클릭했을 때 %1 %2",
         args0: [
             { type: "input_dummy" },
             {
@@ -16,7 +16,13 @@ Blockly.defineBlocksWithJsonArray([
     }
 ])
 
-javascriptGenerator.forBlock["when_run_button_click"] =
-    (block, generator) => {
+const jsGenerator = new Blockly.Generator("js")
+
+jsGenerator.forBlock["when_run_button_click"] =
+    function (block, generator) {
+        console.log("ggg")
         generator.statementToCode(block, "NAME")
+        return "hi()"
     }
+
+export { jsGenerator }

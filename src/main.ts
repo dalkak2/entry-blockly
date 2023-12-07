@@ -1,5 +1,6 @@
 import { Blockly } from "./deps/blockly.ts"
 import "./defineBlocks.ts"
+import { jsGenerator } from "./defineBlocks.ts"
 
 Blockly.inject("blocklyDiv", {
     toolbox: {
@@ -43,3 +44,10 @@ const onresize = () => {
     Blockly.svgResize(workspace)
 }
 addEventListener("resize", onresize, false)
+
+document.querySelector("button")!.addEventListener("click", () => {
+    console.log("codegen")
+    const code = jsGenerator.workspaceToCode(workspace)
+    console.log(code)
+    document.getElementById("textarea")!.innerText = code
+})
