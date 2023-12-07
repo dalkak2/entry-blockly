@@ -25,4 +25,8 @@ jsGenerator.forBlock["when_run_button_click"] =
         return "hi()"
     }
 
+jsGenerator.scrub_ = (block, code, thisOnly) => {
+    return "vvvv"
+}
+
 export { jsGenerator }
