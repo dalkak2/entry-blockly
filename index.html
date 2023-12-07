@@ -5,18 +5,24 @@
     </head>
     <body>
         <div id="blocklyArea" class="w(100%) h(100%)">
-            <div id="blocklyDiv"></div>
+            <div id="blocklyDiv" class="w(100%) h(100%)"></div>
         </div>
         <script type="module">
             import Blockly from "https://esm.sh/v135/blockly@10.2.2"
 
             Blockly.inject("blocklyDiv", {
                 toolbox: {
-                    kind: "flyoutToolbox",
+                    kind: "categoryToolbox",
                     contents: [
                         {
-                            kind: "block",
-                            type: "controls_if",
+                            kind: "category",
+                            name: "Core",
+                            contents: [
+                                {
+                                    kind: "block",
+                                    type: "controls_if",
+                                }
+                            ]
                         }
                     ]
                 }
