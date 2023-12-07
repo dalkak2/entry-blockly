@@ -1,13 +1,5 @@
-import Blockly from "https://esm.sh/v135/blockly@10.2.2"
-
-Blockly.defineBlocksWithJsonArray([
-    {
-        type: "when_run_button_click",
-        message0: "시작하기 버튼을 클릭했을 때",
-        nextStatement: null,
-        colour: 135,
-    }
-])
+import { Blockly } from "./deps/blockly.ts"
+import "./defineBlocks.ts"
 
 Blockly.inject("blocklyDiv", {
     toolbox: {
