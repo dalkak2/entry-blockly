@@ -2,7 +2,7 @@ import { Blockly } from "./deps/blockly.ts"
 import "./defineBlocks.ts"
 import { jsGenerator } from "./defineBlocks.ts"
 
-Blockly.inject("blocklyDiv", {
+const workspace = Blockly.inject("blocklyDiv", {
     toolbox: {
         kind: "categoryToolbox",
         contents: [
@@ -13,21 +13,19 @@ Blockly.inject("blocklyDiv", {
                     {
                         kind: "block",
                         type: "when_run_button_click",
-                    }
+                    },
+                    {
+                        kind: "block",
+                        type: "controls_if",
+                    },
                 ]
-            }
+            },
         ]
     }
 })
 
 const blocklyArea = document.getElementById("blocklyArea")!
 const blocklyDiv = document.getElementById("blocklyDiv")!
-const workspace = Blockly.inject(
-    blocklyDiv,
-    {
-        toolbox: document.getElementById("toolbox")!
-    }
-)
 const onresize = () => {
     let element = blocklyArea!
     let x = 0
@@ -47,7 +45,10 @@ addEventListener("resize", onresize, false)
 
 document.querySelector("button")!.addEventListener("click", () => {
     console.log("codegen")
+    console.log(workspace.getTopBlocks(true))
     const code = jsGenerator.workspaceToCode(workspace)
     console.log(code)
     document.getElementById("textarea")!.innerText = code
 })
+
+workspace.addChangeListener(console.log)
