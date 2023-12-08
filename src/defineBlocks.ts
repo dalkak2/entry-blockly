@@ -1,5 +1,7 @@
 import { Blockly } from "./deps/blockly.ts"
 
+const jsGenerator = new Blockly.Generator("js")
+
 Blockly.defineBlocksWithJsonArray([
     {
         type: "when_run_button_click",
@@ -11,17 +13,15 @@ Blockly.defineBlocksWithJsonArray([
                 name: "NAME",
             }
         ],
-        nextStatement: null,
         colour: 135,
     }
 ])
 
-const jsGenerator = new Blockly.Generator("js")
-
 jsGenerator.forBlock["when_run_button_click"] =
-    function (block, generator) {
-        generator.statementToCode(block, "NAME")
-        return "hi()"
+    (block, generator) => {
+        return `hi(${
+            generator.statementToCode(block, "NAME")
+        })`
     }
 
 
