@@ -24,5 +24,4 @@ jsGenerator.forBlock["when_run_button_click"] =
         })`
     }
 
-
 export { jsGenerator }

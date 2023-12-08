@@ -1,8 +1,6 @@
 import { Blockly } from "./deps/blockly.ts"
 import { jsGenerator } from "./defineBlocks.ts"
 
-console.log("hi", typeof Blockly.Blocks["controls_if"])
-
 import {
     ContinuousToolbox,
     ContinuousFlyout,
