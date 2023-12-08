@@ -43,12 +43,7 @@ const onresize = () => {
 }
 addEventListener("resize", onresize, false)
 
-document.querySelector("button")!.addEventListener("click", () => {
-    console.log("codegen")
-    console.log(workspace.getTopBlocks(true))
+workspace.addChangeListener(() => {
     const code = jsGenerator.workspaceToCode(workspace)
-    console.log(code)
     document.getElementById("textarea")!.innerText = code
 })
-
-workspace.addChangeListener(console.log)

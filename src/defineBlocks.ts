@@ -20,7 +20,6 @@ const jsGenerator = new Blockly.Generator("js")
 
 jsGenerator.forBlock["when_run_button_click"] =
     function (block, generator) {
-        console.log("ggg")
         generator.statementToCode(block, "NAME")
         return "hi()"
     }
