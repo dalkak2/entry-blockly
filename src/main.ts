@@ -1,8 +1,20 @@
 import { Blockly } from "./deps/blockly.ts"
-import "./defineBlocks.ts"
 import { jsGenerator } from "./defineBlocks.ts"
 
+console.log("hi", typeof Blockly.Blocks["controls_if"])
+
+import {
+    ContinuousToolbox,
+    ContinuousFlyout,
+    ContinuousMetrics,
+} from "./deps/continuous-toolbox/index.js"
+
 const workspace = Blockly.inject("blocklyDiv", {
+    plugins: {
+        toolbox: ContinuousToolbox,
+        flyoutsVerticalToolbox: ContinuousFlyout,
+        metricsManager: ContinuousMetrics,
+    },
     toolbox: {
         kind: "categoryToolbox",
         contents: [

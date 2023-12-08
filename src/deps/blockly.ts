@@ -1,1 +1,1 @@
-export { default as Blockly } from "https://esm.sh/v135/blockly@10.2.2"
+export { default as Blockly } from "https://esm.sh/v135/blockly@10.3.0"
