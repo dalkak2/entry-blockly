@@ -13,6 +13,7 @@ const workspace = Blockly.inject("blocklyDiv", {
         flyoutsVerticalToolbox: ContinuousFlyout,
         metricsManager: ContinuousMetrics,
     },
+    renderer: "zelos",
     toolbox: {
         kind: "categoryToolbox",
         contents: [

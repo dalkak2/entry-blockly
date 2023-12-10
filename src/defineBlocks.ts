@@ -5,9 +5,8 @@ const jsGenerator = new Blockly.Generator("js")
 Blockly.defineBlocksWithJsonArray([
     {
         type: "when_run_button_click",
-        message0: "시작하기 버튼을 클릭했을 때 %1 %2",
+        message0: "시작하기 버튼을 클릭했을 때\n%1",
         args0: [
-            { type: "input_dummy" },
             {
                 type: "input_statement",
                 name: "NAME",
