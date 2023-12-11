@@ -1,5 +1,5 @@
 import { Blockly } from "./deps/blockly.ts"
-import { jsGenerator } from "./defineBlocks.ts"
+import { jsGenerator, toolbox } from "./defineBlocks.ts"
 
 import {
     ContinuousToolbox,
@@ -14,25 +14,7 @@ const workspace = Blockly.inject("blocklyDiv", {
         metricsManager: ContinuousMetrics,
     },
     renderer: "zelos",
-    toolbox: {
-        kind: "categoryToolbox",
-        contents: [
-            {
-                kind: "category",
-                name: "Core",
-                contents: [
-                    {
-                        kind: "block",
-                        type: "when_run_button_click",
-                    },
-                    {
-                        kind: "block",
-                        type: "controls_if",
-                    },
-                ]
-            },
-        ]
-    }
+    toolbox,
 })
 
 const blocklyArea = document.getElementById("blocklyArea")!

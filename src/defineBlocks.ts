@@ -29,3 +29,23 @@ jsGenerator.forBlock["controls_if"] =
     }
 
 export { jsGenerator }
+
+export const toolbox = {
+    kind: "categoryToolbox",
+    contents: [
+        {
+            kind: "category",
+            name: "Core",
+            contents: [
+                {
+                    kind: "block",
+                    type: "when_run_button_click",
+                },
+                {
+                    kind: "block",
+                    type: "controls_if",
+                },
+            ]
+        },
+    ]
+}
