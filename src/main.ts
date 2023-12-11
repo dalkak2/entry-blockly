@@ -1,6 +1,8 @@
 import { Blockly } from "./deps/blockly.ts"
 import { jsGenerator, toolbox } from "./defineBlocks.ts"
 
+import "./CustomRenderer.ts"
+
 import {
     ContinuousToolbox,
     ContinuousFlyout,
@@ -13,7 +15,7 @@ const workspace = Blockly.inject("blocklyDiv", {
         flyoutsVerticalToolbox: ContinuousFlyout,
         metricsManager: ContinuousMetrics,
     },
-    renderer: "zelos",
+    renderer: "custom_renderer",
     toolbox,
 })
 
