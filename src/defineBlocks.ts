@@ -80,14 +80,12 @@ const skeleton: Record<Skeleton, any> = {
         previousStatement: null,
     },
     basic_string_field: {
-        output: null,
+        output: "String",
     },
     basic_boolean_field: {
-        output: null,
+        output: "Boolean",
     },
-    basic_text: {
-        output: null,
-    },
+    basic_text: {},
     basic_button: {},
     basic_loop: {
         previousStatement: null,
@@ -115,10 +113,55 @@ Blockly.defineBlocksWithJsonArray([
         .map(block => ({
             type: block.blockName,
             message0: block.template,
-            args0: block.params.map(param => ({
-                type: "field_input",
-                text: param.type
-            })),
+            args0: block.params.map(param => {
+                if (typeof param == "string") throw new Error(param)
+                switch (param.type) {
+                    case "Indicator":
+                        /*
+                        return {
+                            type: "field_image",
+                        }
+                        */
+                        return {
+                            type: "field_label_serializable",
+                            name: "NAME" + Math.random(),
+                            text: "",
+                        } 
+                    case "Keyboard":
+                    case "DropdownDynamic":
+                    case "Dropdown":
+                        return {
+                            type: "field_input",
+                            name: "NAME" + Math.random(),
+                            text: param.type,
+                        }
+                    case "TextInput":
+                    case "Block":
+                        return {
+                            type: "input_value",
+                            name: "NAME" + Math.random(),
+                            check: param.accept?.replace(/^(.)/, x => x.toUpperCase()),
+                        }
+                    case "LineBreak":
+                        return {
+                            type: "input_statement",
+                            name: "NAME" + Math.random(),
+                        }
+                    case "Text":
+                        return {
+                            type: "field_label_serializable",
+                            name: "NAME" + Math.random(),
+                            text: param.text,
+                        }
+                    case "Color":
+                        return {
+                            type: "field_colour",
+                            name: "NAME" + Math.random(),
+                            colour: "red",
+                        }
+                    default:
+                }
+            }),
             colour: block.color,
             ...skeleton[block.skeleton],
         }))
