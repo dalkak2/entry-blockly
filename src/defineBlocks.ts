@@ -4,7 +4,6 @@ const jsGenerator = new Blockly.Generator("js")
 
 jsGenerator.forBlock["when_run_button_click"] =
     (block, generator) => {
-        console.log(block.getChildren(false))
         block.nextConnection
         return `hi(${
             block.getNextBlock()
@@ -21,7 +20,7 @@ jsGenerator.forBlock["controls_if"] =
 
 export { jsGenerator }
 
-import type { CategoryData } from "https://deno.land/x/entry_block_data@0.1.0/type.ts"
+import type { CategoryData, Skeleton } from "https://deno.land/x/entry_block_data@0.1.0/type.ts"
 
 const entryBlockData = await fetch("https://deno.land/x/entry_block_data@0.1.0/data.json").then(x => x.json()) as CategoryData[]
 
@@ -32,6 +31,7 @@ console.log(
 export const toolbox = {
     kind: "categoryToolbox",
     contents: [
+        /*
         {
             kind: "category",
             name: "Core",
@@ -46,6 +46,7 @@ export const toolbox = {
                 },
             ]
         },
+        */
         ...entryBlockData.map(({ category, blocks }) => ({
             kind: "category",
             name: category,
@@ -57,6 +58,37 @@ export const toolbox = {
                 }))
         }))
     ]
+}
+
+const skeleton: Record<Skeleton, any> = {
+    basic: {
+        previousStatement: null,
+        nextStatement: null,
+    },
+    basic_event: {
+        nextStatement: null,
+    },
+    basic_without_next: {
+        previousStatement: null,
+    },
+    basic_string_field: {
+        output: null,
+    },
+    basic_boolean_field: {
+        output: null,
+    },
+    basic_text: {
+        output: null,
+    },
+    basic_button: {},
+    basic_loop: {
+        previousStatement: null,
+        nextStatement: null,
+    },
+    basic_double_loop: {
+        previousStatement: null,
+        nextStatement: null,
+    },
 }
 
 Blockly.defineBlocksWithJsonArray([
@@ -76,6 +108,6 @@ Blockly.defineBlocksWithJsonArray([
             type: block.blockName,
             message0: block.template?.replaceAll("%", ""),
             colour: block.color,
-            nextStatement: null,
+            ...skeleton[block.skeleton],
         }))
 ])
