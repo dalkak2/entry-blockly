@@ -112,6 +112,7 @@ Blockly.defineBlocksWithJsonArray([
         .filter(({ template }) => template)
         .map(block => ({
             type: block.blockName,
+            inputsInline: true,
             message0: block.template,
             args0: block.params.map(param => {
                 if (typeof param == "string") throw new Error(param)
@@ -126,16 +127,21 @@ Blockly.defineBlocksWithJsonArray([
                             type: "field_label_serializable",
                             name: "NAME" + Math.random(),
                             text: "",
-                        } 
-                    case "Keyboard":
+                        }
                     case "DropdownDynamic":
                     case "Dropdown":
+                        return {
+                            type: "field_dropdown",
+                            name: "NAME" + Math.random(),
+                            options: param.options || [["?", "null"]]
+                        }
+                    case "Keyboard":
+                    case "TextInput":
                         return {
                             type: "field_input",
                             name: "NAME" + Math.random(),
                             text: param.type,
                         }
-                    case "TextInput":
                     case "Block":
                         return {
                             type: "input_value",
