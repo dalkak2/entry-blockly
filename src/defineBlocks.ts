@@ -28,6 +28,14 @@ console.log(
     entryBlockData
 )
 
+const findBlock = (targetName: string) =>
+    entryBlockData.find(({ blocks }) =>
+        blocks.find(({ blockName }) => blockName == targetName)
+    )?.blocks.find(({ blockName }) => blockName == targetName)
+
+findBlock("repeat_inf")!.params.splice(1)
+findBlock("get_sound_volume")!.template = "%1"
+
 export const toolbox = {
     kind: "categoryToolbox",
     contents: [
@@ -106,11 +114,11 @@ Blockly.defineBlocksWithJsonArray([
         .filter(({ template }) => template)
         .map(block => ({
             type: block.blockName,
-            message0: block.template?.replaceAll(
-                /%(\d+)/g,
-                (_, n) => `[${block.params[n - 1]?.type}]`
-            ),
-            // args0: block.params.map
+            message0: block.template,
+            args0: block.params.map(param => ({
+                type: "field_input",
+                text: param.type
+            })),
             colour: block.color,
             ...skeleton[block.skeleton],
         }))
