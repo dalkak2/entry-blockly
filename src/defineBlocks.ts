@@ -110,65 +110,71 @@ Blockly.defineBlocksWithJsonArray([
         .map(({ blocks }) => blocks)
         .flat()
         .filter(({ template }) => template)
-        .map(block => ({
-            type: block.blockName,
-            inputsInline: true,
-            message0: block.template,
-            args0: block.params.map(param => {
-                if (typeof param == "string") throw new Error(param)
-                switch (param.type) {
-                    case "Indicator":
-                        /*
-                        return {
-                            type: "field_image",
-                        }
-                        */
-                        return {
-                            type: "field_label_serializable",
-                            name: "NAME" + Math.random(),
-                            text: "",
-                        }
-                    case "DropdownDynamic":
-                    case "Dropdown":
-                        return {
-                            type: "field_dropdown",
-                            name: "NAME" + Math.random(),
-                            options: param.options || [["?", "null"]]
-                        }
-                    case "Keyboard":
-                    case "TextInput":
-                        return {
-                            type: "field_input",
-                            name: "NAME" + Math.random(),
-                            text: param.type,
-                        }
-                    case "Block":
-                        return {
-                            type: "input_value",
-                            name: "NAME" + Math.random(),
-                            check: param.accept?.replace(/^(.)/, x => x.toUpperCase()),
-                        }
-                    case "LineBreak":
-                        return {
-                            type: "input_statement",
-                            name: "NAME" + Math.random(),
-                        }
-                    case "Text":
-                        return {
-                            type: "field_label_serializable",
-                            name: "NAME" + Math.random(),
-                            text: param.text,
-                        }
-                    case "Color":
-                        return {
-                            type: "field_colour",
-                            name: "NAME" + Math.random(),
-                            colour: "red",
-                        }
-                    default:
-                }
-            }),
-            colour: block.color,
-            ...skeleton[block.skeleton],
-        }))
+        .map(block => {
+            if (block.statements?.length) {
+                block.params.push({ type: "LineBreak" })
+                block.template += `\n%${block.params.length}`
+            }
+            return {
+                type: block.blockName,
+                inputsInline: true,
+                message0: block.template,
+                args0: block.params.map(param => {
+                    if (typeof param == "string") throw new Error(param)
+                    switch (param.type) {
+                        case "Indicator":
+                            /*
+                            return {
+                                type: "field_image",
+                            }
+                            */
+                            return {
+                                type: "field_label_serializable",
+                                name: "NAME" + Math.random(),
+                                text: "",
+                            }
+                        case "DropdownDynamic":
+                        case "Dropdown":
+                            return {
+                                type: "field_dropdown",
+                                name: "NAME" + Math.random(),
+                                options: param.options || [["?", "null"]]
+                            }
+                        case "Keyboard":
+                        case "TextInput":
+                            return {
+                                type: "field_input",
+                                name: "NAME" + Math.random(),
+                                text: param.type,
+                            }
+                        case "Block":
+                            return {
+                                type: "input_value",
+                                name: "NAME" + Math.random(),
+                                check: param.accept?.replace(/^(.)/, x => x.toUpperCase()),
+                            }
+                        case "LineBreak":
+                            return {
+                                type: "input_statement",
+                                name: "NAME" + Math.random(),
+                            }
+                        case "Text":
+                            return {
+                                type: "field_label_serializable",
+                                name: "NAME" + Math.random(),
+                                text: param.text,
+                            }
+                        case "Color":
+                            return {
+                                type: "field_colour",
+                                name: "NAME" + Math.random(),
+                                colour: "red",
+                            }
+                        default:
+                    }
+                }),
+                colour: block.color,
+                ...skeleton[block.skeleton],
+            }
+        })
 ])
