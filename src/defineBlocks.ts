@@ -106,7 +106,11 @@ Blockly.defineBlocksWithJsonArray([
         .filter(({ template }) => template)
         .map(block => ({
             type: block.blockName,
-            message0: block.template?.replaceAll("%", ""),
+            message0: block.template?.replaceAll(
+                /%(\d+)/g,
+                (_, n) => `[${block.params[n - 1]?.type}]`
+            ),
+            // args0: block.params.map
             colour: block.color,
             ...skeleton[block.skeleton],
         }))
