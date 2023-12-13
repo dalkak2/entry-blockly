@@ -1,13 +1,17 @@
 import { Blockly } from "./deps/blockly.ts"
 
 class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
+    ARC_SIZE: number
     constructor() {
         super()
+        this.ARC_SIZE = 5
+        this.NOTCH_HEIGHT = 20
+        this.NOTCH_WIDTH = this.NOTCH_HEIGHT + this.ARC_SIZE
     }
     override makeNotch() {
         /* https://github.com/google/blockly/blob/develop/core/renderers/zelos/constants.ts */
-        const arc = 2
-        const height = 8 // this.NOTCH_HEIGHT
+        const arc = this.ARC_SIZE
+        const height = this.NOTCH_HEIGHT
         const width = height + arc // this.NOTCH_WIDTH
     
         return {
