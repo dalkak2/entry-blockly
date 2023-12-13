@@ -6,15 +6,28 @@ class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
     }
     override makeNotch() {
         /* https://github.com/google/blockly/blob/develop/core/renderers/zelos/constants.ts */
-        // const width = this.NOTCH_WIDTH
-        // const height = this.NOTCH_HEIGHT
+        const arc = 2
+        const height = 8 // this.NOTCH_HEIGHT
+        const width = height + arc // this.NOTCH_WIDTH
     
         return {
             type: this.SHAPES.NOTCH,
-            width: 10,
-            height: 8,
-            pathLeft: ` l 8 8 v -6 a 2 2 0 0 1 2 -2 `,
-            pathRight: ` a 2 2 0 0 0 -2 2 v 6 l -8 -8 `,
+            width,
+            height,
+            pathLeft: `
+                l ${height} ${height}
+                v -${height - arc}
+                a ${arc} ${arc}
+                  0 0 1
+                  ${arc} -${arc}
+            `,
+            pathRight: `
+                a ${arc} ${arc}
+                  0 0 0
+                  -${arc} ${arc}
+                v ${height - arc}
+                l -${height} -${height}
+            `,
         }
       }
 }
