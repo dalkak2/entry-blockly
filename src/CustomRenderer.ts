@@ -7,6 +7,12 @@ class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
         this.ARC_SIZE = 5
         this.NOTCH_HEIGHT = 20
         this.NOTCH_WIDTH = this.NOTCH_HEIGHT + this.ARC_SIZE
+        this.NOTCH_OFFSET_LEFT = 0
+        
+        this.CORNER_RADIUS = 0
+            this.TOP_ROW_MIN_HEIGHT = this.CORNER_RADIUS
+            this.BOTTOM_ROW_MIN_HEIGHT = this.CORNER_RADIUS
+            this.FIELD_BORDER_RECT_RADIUS = this.CORNER_RADIUS
     }
     override makeNotch() {
         /* https://github.com/google/blockly/blob/develop/core/renderers/zelos/constants.ts */
@@ -17,7 +23,7 @@ class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
         return {
             type: this.SHAPES.NOTCH,
             width,
-            height,
+            height: 0, /* 블록 상단 여백 */
             pathLeft: `
                 l ${height} ${height}
                 v -${height - arc}
@@ -34,6 +40,93 @@ class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
             `,
         }
       }
+}
+
+class CustomRenderInfo extends Blockly.zelos.RenderInfo {
+    constructor(
+        renderer: Blockly.zelos.Renderer,
+        block: Blockly.BlockSvg,
+    ) {
+        super(renderer, block)
+    }
+    override getSpacerRowHeight_(
+        _prev: Blockly.blockRendering.Row,
+        _next: Blockly.blockRendering.Row
+    ): number {
+        /* 블록 하단 여백 */
+        return 4
+    }
+    protected adjustXPosition_(): void {
+        /* 블록 왼쪽 여백 (노치 공간) */
+        const Types = Blockly.blockRendering.Types
+        
+        const notchTotalWidth =
+        this.constants_.NOTCH_OFFSET_LEFT + this.constants_.NOTCH_WIDTH;
+        let minXPos = notchTotalWidth;
+        // Run through every input row on the block and only apply bump logic to the
+        // first input row (if the block has prev connection) and every input row
+        // that has a prev and next notch.
+        for (let i = 2; i < this.rows.length - 1; i += 2) {
+            const prevSpacer = this.rows[i - 1] as Blockly.blockRendering.SpacerRow;
+            const row = this.rows[i];
+            const nextSpacer = this.rows[i + 1] as Blockly.blockRendering.SpacerRow;
+
+            const hasPrevNotch =
+                i === 2
+                ? !!this.topRow.hasPreviousConnection
+                : !!prevSpacer.followsStatement;
+            const hasNextNotch =
+                i + 2 >= this.rows.length - 1
+                ? !!this.bottomRow.hasNextConnection
+                : !!nextSpacer.precedesStatement;
+
+            if (Types.isInputRow(row) && row.hasStatement) {
+                row.measure();
+                minXPos =
+                row.width - (row.getLastInput()?.width ?? 0) + notchTotalWidth;
+            } else if (
+                hasPrevNotch &&
+                (i === 2 || hasNextNotch) &&
+                Types.isInputRow(row) &&
+                !row.hasStatement
+            ) {
+                let xCursor = row.xPos;
+                let prevInRowSpacer = null;
+                for (let j = 0; j < row.elements.length; j++) {
+                const elem = row.elements[j];
+                if (Types.isSpacer(elem)) {
+                    prevInRowSpacer = elem;
+                }
+                if (prevInRowSpacer && (Types.isField(elem) || Types.isInput(elem))) {
+                    if (
+                        xCursor < minXPos /* <edited> */ /* &&
+                        !(
+                            Types.isField(elem) &&
+                            elem instanceof Blockly.blockRendering.Field &&
+                            (elem.field instanceof Blockly.FieldLabel ||
+                            elem.field instanceof Blockly.FieldImage)
+                        ) */
+                        /* </edited> */
+                    ) {
+                        const difference = minXPos - xCursor;
+                        prevInRowSpacer.width += difference;
+                        /* <edited> */
+                        if (
+                            Types.isField(elem) &&
+                            elem instanceof Blockly.blockRendering.Field &&
+                            (elem.field instanceof Blockly.FieldLabel ||
+                            elem.field instanceof Blockly.FieldImage)
+                        ) {
+                            prevInRowSpacer.width += this.constants_.SMALL_PADDING
+                        }
+                        /* </edited> */
+                    }
+                }
+                xCursor += elem.width;
+                }
+            }
+        }
+    }
 }
 
 class CustomDrawer extends Blockly.zelos.Drawer {
@@ -76,6 +169,9 @@ class CustomRenderer extends Blockly.zelos.Renderer {
         info: Blockly.zelos.RenderInfo,
     ) {
         return new CustomDrawer(block, info)
+    }
+    makeRenderInfo_(block: Blockly.BlockSvg) {
+        return new CustomRenderInfo(this, block)
     }
 }
 
