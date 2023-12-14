@@ -170,7 +170,7 @@ class CustomRenderer extends Blockly.zelos.Renderer {
     ) {
         return new CustomDrawer(block, info)
     }
-    makeRenderInfo_(block: Blockly.BlockSvg) {
+    makeRenderInfo_(block: Blockly.BlockSvg): CustomRenderInfo {
         return new CustomRenderInfo(this, block)
     }
 }
