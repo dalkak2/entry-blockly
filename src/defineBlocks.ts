@@ -28,6 +28,23 @@ console.log(
     entryBlockData
 )
 
+entryBlockData.forEach(({ blocks }) => {
+    blocks.forEach(({
+        blockName,
+        params,
+    }) => {
+        jsGenerator.forBlock[blockName] =
+            (block, generator) => {
+                params.map(param => {
+                    //if (param ==)
+                })
+                return `Entry.${blockName}(
+                    ${generator.blockToCode(block.getNextBlock())}
+                )`
+            }
+    })
+})
+
 const findBlock = (targetName: string) =>
     entryBlockData.find(({ blocks }) =>
         blocks.find(({ blockName }) => blockName == targetName)
@@ -119,7 +136,7 @@ Blockly.defineBlocksWithJsonArray([
                 type: block.blockName,
                 inputsInline: true,
                 message0: block.template,
-                args0: block.params.map(param => {
+                args0: block.params.map((param, i) => {
                     if (typeof param == "string") throw new Error(param)
                     switch (param.type) {
                         case "Indicator":
@@ -130,44 +147,44 @@ Blockly.defineBlocksWithJsonArray([
                             */
                             return {
                                 type: "field_label_serializable",
-                                name: "NAME" + Math.random(),
+                                name: "%" + i,
                                 text: "",
                             }
                         case "DropdownDynamic":
                         case "Dropdown":
                             return {
                                 type: "field_dropdown",
-                                name: "NAME" + Math.random(),
+                                name: "%" + i,
                                 options: param.options || [["?", "null"]]
                             }
                         case "Keyboard":
                         case "TextInput":
                             return {
                                 type: "field_input",
-                                name: "NAME" + Math.random(),
+                                name: "%" + i,
                                 text: param.type,
                             }
                         case "Block":
                             return {
                                 type: "input_value",
-                                name: "NAME" + Math.random(),
+                                name: "%" + i,
                                 check: param.accept?.replace(/^(.)/, x => x.toUpperCase()),
                             }
                         case "LineBreak":
                             return {
                                 type: "input_statement",
-                                name: "NAME" + Math.random(),
+                                name: "%" + i,
                             }
                         case "Text":
                             return {
                                 type: "field_label_serializable",
-                                name: "NAME" + Math.random(),
+                                name: "%" + i,
                                 text: param.text,
                             }
                         case "Color":
                             return {
                                 type: "field_colour",
-                                name: "NAME" + Math.random(),
+                                name: "%" + i,
                                 colour: "red",
                             }
                         default:
