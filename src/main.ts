@@ -9,6 +9,8 @@ import {
     ContinuousMetrics,
 } from "./deps/continuous-toolbox/index.js"
 
+import { format } from "./util/format.ts"
+
 const workspace = Blockly.inject("blocklyDiv", {
     plugins: {
         toolbox: ContinuousToolbox,
@@ -39,6 +41,6 @@ const onresize = () => {
 addEventListener("resize", onresize, false)
 
 workspace.addChangeListener(() => {
-    const code = jsGenerator.workspaceToCode(workspace)
+    const code = format(jsGenerator.workspaceToCode(workspace))
     document.getElementById("textarea")!.innerText = code
 })
