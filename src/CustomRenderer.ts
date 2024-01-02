@@ -1,3 +1,4 @@
+import { TopRow } from "https://esm.sh/v135/blockly@10.3.0/core/renderers/common/block_rendering.js";
 import { Blockly } from "./deps/blockly.ts"
 
 class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
@@ -42,12 +43,39 @@ class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
       }
 }
 
+class TopRow extends Blockly.zelos.TopRow {
+    measure(): void {
+        let height = 0;
+        let width = 0;
+        let ascenderHeight = 0;
+        for (let i = 0; i < this.elements.length; i++) {
+            const elem = this.elements[i];
+            width += elem.width;
+            /* <edited> */ /*
+            if (!Types.isSpacer(elem)) {
+                if (Types.isHat(elem) && elem instanceof Hat) {
+                ascenderHeight = Math.max(ascenderHeight, elem.ascenderHeight);
+                } else {
+                height = Math.max(height, elem.height);
+                }
+            }
+            */ /* </edited> */
+        }
+        this.width = Math.max(this.minWidth, width);
+        this.height = Math.max(this.minHeight, height) + ascenderHeight;
+        this.ascenderHeight = ascenderHeight;
+        this.capline = this.ascenderHeight;
+        this.widthWithConnectedBlocks = this.width;
+    }
+}
+
 class CustomRenderInfo extends Blockly.zelos.RenderInfo {
     constructor(
         renderer: Blockly.zelos.Renderer,
         block: Blockly.BlockSvg,
     ) {
         super(renderer, block)
+        this.topRow = new TopRow(this.constants_)
     }
     override getSpacerRowHeight_(
         _prev: Blockly.blockRendering.Row,
