@@ -4,7 +4,7 @@ class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
     ARC_SIZE: number
     constructor() {
         super()
-        this.ARC_SIZE = 5
+        this.ARC_SIZE = 8
         this.NOTCH_HEIGHT = 20
         this.NOTCH_WIDTH = this.NOTCH_HEIGHT + this.ARC_SIZE
         this.NOTCH_OFFSET_LEFT = 0
@@ -23,7 +23,7 @@ class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
         return {
             type: this.SHAPES.NOTCH,
             width,
-            height: 0, /* 블록 상단 여백 */
+            height, /* 블록 상단 여백 */
             pathLeft: `
                 l ${height} ${height}
                 v -${height - arc}
@@ -139,21 +139,6 @@ class CustomDrawer extends Blockly.zelos.Drawer {
 
     override draw() {
         super.draw()
-    }
-    override drawOutline_() {
-        if (
-            this.info_.outputConnection &&
-            this.info_.outputConnection.isDynamicShape &&
-            !this.info_.hasStatementInput &&
-            !this.info_.bottomRow.hasNextConnection
-        ) {
-            this.drawFlatTop_();
-            this.drawRightDynamicConnection_();
-            this.drawFlatBottom_();
-            this.drawLeftDynamicConnection_();
-        } else {
-            super.drawOutline_();
-        }
     }
 }
 
