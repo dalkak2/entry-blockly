@@ -1,4 +1,3 @@
-import { TopRow } from "https://esm.sh/v135/blockly@10.3.0/core/renderers/common/block_rendering.js";
 import { Blockly } from "./deps/blockly.ts"
 
 class CustomConstantProvider extends Blockly.zelos.ConstantProvider {
